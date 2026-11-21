@@ -7,7 +7,9 @@ Basys3 보드에 MicroBlaze 소프트 프로세서를 올리고, 직접 설계�
 - LED가 움직이는 중에 버튼을 누르면 방향을 바꿔 반대쪽 끝부터 다시 시작합니다.
 - 가운데 버튼(BTNC): 시스템 리셋
 
-동작 영상: (유튜브 링크)
+동작 영상: https://youtu.be/Y_DCsP7n9JY
+
+[![동작 영상](https://img.youtube.com/vi/Y_DCsP7n9JY/0.jpg)](https://youtu.be/Y_DCsP7n9JY)
 
 ## 개발 환경
 
@@ -87,20 +89,20 @@ typedef struct {
 
 | 폴더 | 내용 |
 |---|---|
-| `00. C` | Vitis 애플리케이션 `main.c` |
-| `01. RTL/gpio_1.0` | 직접 만든 AXI4-Lite GPIO IP (hdl, component.xml) |
-| `02. xdc` | Basys3 핀 제약 |
-| `03. bd` | Block Design 재생성 tcl |
-| `04. xsa` | 비트스트림을 포함한 하드웨어 플랫폼 |
+| `00.C` | Vitis 애플리케이션 `main.c` |
+| `01.RTL/gpio_1.0` | 직접 만든 AXI4-Lite GPIO IP (hdl, component.xml) |
+| `02.xdc` | Basys3 핀 제약 |
+| `03.bd` | Block Design 재생성 tcl |
+| `04.xsa` | 비트스트림을 포함한 하드웨어 플랫폼 |
 
 ## 재현 방법
 
 1. Vivado 2020.2에서 Basys3 보드로 새 프로젝트를 만듭니다.
-2. Settings의 IP Repository에 `01. RTL` 폴더를 추가합니다.
-3. Tcl Console에서 `source "03. bd/gpio_design_1.tcl"`로 Block Design을 만듭니다.
-4. Block Design에서 HDL Wrapper를 만들고 `02. xdc`의 제약 파일을 추가합니다.
-5. 비트스트림을 생성하고 File > Export > Export Hardware에서 Include bitstream으로 XSA를 내보냅니다. 1~5단계를 건너뛰려면 `04. xsa`의 파일을 그대로 써도 됩니다.
-6. Vitis 2020.2에서 XSA로 Platform Project를 만들고, Empty Application(C)을 만든 뒤 `00. C/main.c`를 넣고 빌드합니다.
+2. Settings의 IP Repository에 `01.RTL` 폴더를 추가합니다.
+3. Tcl Console에서 `source 03.bd/gpio_design_1.tcl`로 Block Design을 만듭니다.
+4. Block Design에서 HDL Wrapper를 만들고 `02.xdc`의 제약 파일을 추가합니다.
+5. 비트스트림을 생성하고 File > Export > Export Hardware에서 Include bitstream으로 XSA를 내보냅니다. 1~5단계를 건너뛰려면 `04.xsa`의 파일을 그대로 써도 됩니다.
+6. Vitis 2020.2에서 XSA로 Platform Project를 만들고, Empty Application(C)을 만든 뒤 `00.C/main.c`를 넣고 빌드합니다.
 7. Program FPGA 후 Run As > Launch Hardware로 실행합니다.
 
 ## 참고
