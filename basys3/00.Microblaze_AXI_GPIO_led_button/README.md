@@ -1,15 +1,17 @@
 # 01. MicroBlaze GPIO LED
 
-Basys3 보드에 MicroBlaze 소프트 프로세서를 올리고, 직접 설계한 AXI4-Lite GPIO IP로 LED 파도타기를 버튼으로 제어하는 실습입니다.
+Basys3 보드에 MicroBlaze 소프트 프로세서를 올리고, AXI4-Lite GPIO IP로 LED 파도타기를 버튼으로 제어하는 실습입니다.
+
+교육 과정 수업에서는 GPIO IP를 만들어 MicroBlaze에 1개 연결하고 LED 4개를 켜고 끄는 데까지 배웠습니다. 이 프로젝트에서는 그 IP를 5개로 늘려 LED 16개와 버튼 4개에 연결하고, 레지스터에 접근하는 C 구조체와 LED 파도타기, 버튼 방향 전환 제어를 직접 작성했습니다.
 
 - 왼쪽 버튼(BTNL): LED가 왼쪽에서 오른쪽으로 한 칸씩 켜졌다 꺼집니다.
 - 오른쪽 버튼(BTNR): LED가 오른쪽에서 왼쪽으로 이동합니다.
 - LED가 움직이는 중에 버튼을 누르면 방향을 바꿔 반대쪽 끝부터 다시 시작합니다.
 - 가운데 버튼(BTNC): 시스템 리셋
 
-동작 영상: https://youtu.be/Y_DCsP7n9JY
+동작 영상: https://youtu.be/6P4IyXeRwGo
 
-[![동작 영상](https://img.youtube.com/vi/Y_DCsP7n9JY/0.jpg)](https://youtu.be/Y_DCsP7n9JY)
+[![동작 영상](https://img.youtube.com/vi/6P4IyXeRwGo/0.jpg)](https://youtu.be/6P4IyXeRwGo)
 
 ## 개발 환경
 
@@ -34,7 +36,7 @@ Basys3 보드에 MicroBlaze 소프트 프로세서를 올리고, 직접 설계�
   LMB BRAM 128KB                        +--------> AXI UART Lite (115200bps)
 ```
 
-Xilinx AXI GPIO 대신 직접 만든 `gpio` IP를 5개 배치했습니다. 4개는 LED 16개, 1개는 버튼 4개에 연결했습니다.
+Xilinx AXI GPIO 대신 수업에서 만든 `gpio` IP를 쓰되, 수업에서는 1개만 연결했던 것을 5개로 늘렸습니다. 4개는 LED 16개, 1개는 버튼 4개에 연결했습니다.
 
 ### 주소 맵
 
@@ -65,11 +67,11 @@ assign io_port[i] = cr[i] ? odr[i] : 1'bz;
 assign idr[i]     = ~cr[i] ? io_port[i] : 1'bz;
 ```
 
-AXI4-Lite 슬레이브(`gpio_v1_0_S00_AXI.v`)에서 slv_reg0을 CR, slv_reg1을 ODR로 쓰고, 0x8을 읽으면 레지스터 대신 `idr` 핀 값을 돌려주도록 고쳤습니다.
+AXI4-Lite 슬레이브(`gpio_v1_0_S00_AXI.v`)에서 slv_reg0을 CR, slv_reg1을 ODR로 쓰고, 0x8을 읽으면 레지스터 대신 `idr` 핀 값을 돌려줍니다.
 
 ## 소프트웨어
 
-Xilinx 드라이버 함수를 쓰지 않고 구조체 포인터로 레지스터에 직접 접근합니다.
+C 코드는 모두 직접 작성했습니다. Xilinx 드라이버 함수를 쓰지 않고, STM32처럼 레지스터 배치에 맞춘 구조체 포인터로 GPIO 5개에 접근합니다.
 
 ```c
 typedef struct {
@@ -90,7 +92,7 @@ typedef struct {
 | 폴더 | 내용 |
 |---|---|
 | `00.C` | Vitis 애플리케이션 `main.c` |
-| `01.RTL/gpio_1.0` | 직접 만든 AXI4-Lite GPIO IP (hdl, component.xml) |
+| `01.RTL/gpio_1.0` | 수업에서 만든 AXI4-Lite GPIO IP (hdl, component.xml) |
 | `02.xdc` | Basys3 핀 제약 |
 | `03.bd` | Block Design 재생성 tcl |
 | `04.xsa` | 비트스트림을 포함한 하드웨어 플랫폼 |
