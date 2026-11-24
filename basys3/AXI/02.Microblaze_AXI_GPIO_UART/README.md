@@ -99,7 +99,6 @@ typedef struct {
 | `02.xdc` | Basys3 핀 제약 |
 | `03.bd` | Block Design 재생성 tcl |
 | `04.xsa` | 비트스트림을 포함한 하드웨어 플랫폼 |
-| `05.tb` | 비어 있음 |
 
 ## 재현 방법
 
